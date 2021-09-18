@@ -12,7 +12,7 @@ namespace LandingPlatform.Core.Model
         private readonly Position _topLefCorner;
         private readonly Position _bottomRightCorner;
         private Position _latestReservedPosition;
-        private readonly object _syncObject = new();
+        private static readonly object SyncObject = new();
 
         public Platform(Position topLefCorner, Position bottomRightCorner)
         {
@@ -28,7 +28,7 @@ namespace LandingPlatform.Core.Model
 
             if (IsInSidePlatform(position)) return OutOfPlatform;
 
-            lock (_syncObject)
+            lock (SyncObject)
             {
                 if (HasPositionPreviouslyBeenCheckedByAnotherRocket(position)) return Clash;
 
